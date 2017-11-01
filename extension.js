@@ -7,6 +7,10 @@ const Type = {
     list:1
 };
 
+const CONFIG = {
+    level_expand: 2
+};
+
 class BookStruct{
     
     constructor(rootPath){
@@ -16,9 +20,21 @@ class BookStruct{
             type:Type.header,
             children:[]
         };
+        this.emitter = new vscode.EventEmitter();
+        this.onDidChangeTreeData = this.emitter.event;
+    }
+
+
+    update(){
+        this.emitter.fire();
     }
 
     parse(lines){
+        this.outline = {
+            level:1,
+            type:Type.header,
+            children:[]
+        };
         let current = null;
         lines.forEach((line)=>{
             if(line == null || line.length < 1) return;
@@ -49,7 +65,7 @@ class BookStruct{
                     parent:current
                 };
                 current.children.push(item);
-                current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+                current.collapsibleState = current.level < CONFIG.level_expand ? vscode.TreeItemCollapsibleState.Expanded: vscode.TreeItemCollapsibleState.Collapsed;
                 current = item;         
             }else if(/^\t*\*\s+\[.+\]\(.+\)/.test(line) || /^\s*\*\s+\[.+\]\(.+\)/.test(line) ){
 
@@ -80,17 +96,17 @@ class BookStruct{
                 }
                 if(current.type === Type.header){
                     current.children.push(item);
-                    current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+                    current.collapsibleState = current.level < CONFIG.level_expand ? vscode.TreeItemCollapsibleState.Expanded: vscode.TreeItemCollapsibleState.Collapsed;
                     current = item;
                 }else{
                     if(current.level < item.level){
                         current.children.push(item);
-                        current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;                        
+                        current.collapsibleState = current.level < CONFIG.level_expand ? vscode.TreeItemCollapsibleState.Expanded: vscode.TreeItemCollapsibleState.Collapsed;                     
                         current = item;
                     }else if(current.level === item.level){
                         item.parent = current.parent;
                         current.parent.children.push(item);
-                        current.parent.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;                        
+                        current.parent.collapsibleState = current.level < CONFIG.level_expand ? vscode.TreeItemCollapsibleState.Expanded: vscode.TreeItemCollapsibleState.Collapsed;                      
                         current = item;
                     }
                 }
@@ -207,9 +223,6 @@ class Gitbook{
 
         result.push(vscode.commands.registerCommand('extension.iedit', this.openTreeItem));
 
-        vscode.workspace.onDidOpenTextDocument((doc)=>{
-
-        });
         
         if(vscode.window.activeTextEditor){
             openPreview();
@@ -248,6 +261,7 @@ class Gitbook{
         result.push(vscode.workspace.onDidSaveTextDocument((function($this){
             return (doc)=>{
                 $this.bookStruct.parse(doc.getText().split(/\r?\n/));
+                $this.bookStruct.update();
             };
         })(this)));
         return result;
