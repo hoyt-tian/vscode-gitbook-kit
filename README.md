@@ -1,66 +1,22 @@
 # gitbook-kit README
 
 由于Gitbook Editor的Mac版本存在一些bug，使用起来并不方便。当单个页面长度需要滑动时，每次删除都会异常卡、慢，令人困扰。Gitbook-Kit为VSCode添加了相关功能支持。
-This is the README for your extension "gitbook-kit". After writing up a brief description, we recommend including the following sections.
 
-## Features
+Since there're some bugs in Gitbook Editor(Mac version), I made this extension so that I could use VSCode as the gitbook editor.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 功能 Features
 
-For example if there is an image subfolder under your extension project workspace:
+* 可以很方便的在右侧进行效果预览，同步查看当前的代码效果；
+* 提供了Gitbook Structure窗口，方便查看当前文档目录，并支持右键编辑对应文件
+* 在Markdown文件中，右下角有Markdown Example Code，方便快捷查询范例
 
-\!\[feature X\]\(images/feature-x.png\)
+* It's very convience to preivew the markdown content in the right side
+* The Gitbook Structure window shows current catalog, you can navigate to any chapter by right click
+* In the markdown editor, there is a button named `Markdown Example Code`, click it you'll see some examples for common markup
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### 更多信息 More
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [Source code／ Issue discussion on Github](https://github.com/hoyt-tian/vscode-gitbook-kit)
+* [Detail about extension on my Blog](https://www.hoyt-tian.com/vscode-extension-for-gitbook/)
 
 **Enjoy!**

@@ -149,7 +149,9 @@ class Gitbook{
                     "| \\# h1 | H1 |\n"+
                     "| \\# h2 | H2 |\n"+
                     "| \\# h3 | H3 |\n\n"+
-                    "For further Markdown syntax reference: [Markdown Documentation](https://guides.github.com/features/mastering-markdown/#examples)"
+                    "## Useful Links\n"+
+                    "* For further Markdown syntax reference: [Markdown Documentation](https://guides.github.com/features/mastering-markdown/#examples)\n"+
+                    "* [Source code／ Issue discussion on Github](https://github.com/hoyt-tian/vscode-gitbook-kit)\n\n* [Detail about extension on my Blog](https://www.hoyt-tian.com/vscode-extension-for-gitbook/)"
             ,
             language:"markdown"
         }).then((doc)=>{
@@ -235,16 +237,7 @@ class Gitbook{
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-function activate(context) {
-
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "gitbook-kit" is now active!');
-    let openFlag = false;
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-   
+function activate(context) {   
     const kit = new Gitbook(context);
 }
 exports.activate = activate;
