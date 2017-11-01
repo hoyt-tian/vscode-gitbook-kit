@@ -51,30 +51,43 @@ class BookStruct{
                 current.children.push(item);
                 current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
                 current = item;         
-            }else if(/^\*+\s+\[.+\]\(.+\)/.test(line)){
-                let data = line.match(/^(\*+)\s+\[(.+)\]\((.+)\)/);
+            }else if(/^\t*\*\s+\[.+\]\(.+\)/.test(line) || /^\s*\*\s+\[.+\]\(.+\)/.test(line) ){
 
-                let item = {
-                    level:data[1].length,
-                    type:Type.list,
-                    label: data[2],
-                    link:data[3],
-                    children:[],
-                    parent:current
-                };
-                while(current.type === Type.list && current.level > data[1].length){
-                    ;
+                let data = line.match(/^(\t*)\*\s+\[(.+)\]\((.+)\)/);
+                let item = null;
+                if(data && data.length){
+                    item = {
+                        level:data[1].length+1,
+                        type:Type.list,
+                        label: data[2],
+                        link:data[3],
+                        children:[],
+                        parent:current
+                    };
+                }else{
+                    data = line.match(/^(\s*)\*\s+\[(.+)\]\((.+)\)/);
+                    item = {
+                        level:data[1].length/4 + 1,
+                        type:Type.list,
+                        label: data[2],
+                        link:data[3],
+                        children:[],
+                        parent:current
+                    };
+                }
+                while(current.type === Type.list && current.level > item.level){
+                    current = current.parent;
                 }
                 if(current.type === Type.header){
                     current.children.push(item);
                     current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
                     current = item;
                 }else{
-                    if(current.level < data[1].length){
+                    if(current.level < item.level){
                         current.children.push(item);
                         current.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;                        
                         current = item;
-                    }else if(current.level === data[1].length){
+                    }else if(current.level === item.level){
                         item.parent = current.parent;
                         current.parent.children.push(item);
                         current.parent.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;                        
@@ -216,7 +229,7 @@ class Gitbook{
                 this.statusItem.show();
             }
         }
-        vscode.window.onDidChangeActiveTextEditor((function($this){
+        result.push(vscode.window.onDidChangeActiveTextEditor((function($this){
             return ()=>{
                 let active = vscode.window.activeTextEditor;
                 try{
@@ -230,7 +243,13 @@ class Gitbook{
                     $this.statusItem.hide();                
                 }
             }
-        })(this));
+        })(this)));
+
+        result.push(vscode.workspace.onDidSaveTextDocument((function($this){
+            return (doc)=>{
+                $this.bookStruct.parse(doc.getText().split(/\r?\n/));
+            };
+        })(this)));
         return result;
     }
 }
