@@ -1,0 +1,51 @@
+{
+    "name": "gitbook-kit",
+    "displayName": "Gitbook kit",
+    "description": "edit gitbook",
+    "version": "0.0.1",
+    "publisher": "hoyt-tian",
+    "engines": {
+        "vscode": "^1.16.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "activationEvents": [
+        "workspaceContains:SUMMARY.md"
+    ],
+    "main": "./extension",
+    "contributes": {
+        "commands": [{
+            "command": "extension.iedit",
+            "title": "Edit & Preview"
+        }],
+        "views": {
+            "explorer": [
+                {
+                    "id": "bookstruct",
+                    "name": "Gitbook Structure"
+                }
+            ]
+        },
+        "menus": {
+			"view/item/context": [
+				{
+					"command": "extension.iedit",
+					"when": "view == bookstruct"
+				}
+			]
+		}
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.5.2",
+        "vscode": "^1.1.5",
+        "mocha": "^3.5.0",
+        "eslint": "^4.6.1",
+        "@types/node": "^7.0.0",
+        "@types/mocha": "^2.2.42"
+    }
+}
