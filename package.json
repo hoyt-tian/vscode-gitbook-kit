@@ -2,7 +2,7 @@
     "name": "gitbook-kit",
     "displayName": "Gitbook kit",
     "description": "Extension to makes VSCode Markdown Editor for Gitbook",
-    "version": "0.2.0",
+    "version": "0.5.0",
     "publisher": "hoyt-tian",
     "engines": {
         "vscode": "^1.17.0"
@@ -50,5 +50,10 @@
         "eslint": "^4.6.1",
         "@types/node": "^7.0.0",
         "@types/mocha": "^2.2.42"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hoyt-tian/vscode-gitbook-kit"
+    },
+    "homepage": "https://www.hoyt-tian.com/vscode-extension-for-gitbook/"
 }
