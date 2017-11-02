@@ -4,6 +4,8 @@
 
 Since there're some bugs in Gitbook Editor(Mac version), I made this extension so that I could use VSCode as the gitbook editor.
 
+![preview](https://www.hoyt-tian.com/content/images/2017/11/s5.png)
+
 ## 功能 Features
 
 * 可以很方便的在右侧进行效果预览，同步查看当前的代码效果；
