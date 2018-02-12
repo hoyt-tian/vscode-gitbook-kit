@@ -1,6 +1,10 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
+const packageJson = require("./package.json");
+
+// Gloabl Constants
+const extensionName = packageJson.name;
 
 const Type = {
     header:0,
@@ -23,7 +27,6 @@ class BookStruct{
         this.emitter = new vscode.EventEmitter();
         this.onDidChangeTreeData = this.emitter.event;
     }
-
 
     update(){
         this.emitter.fire();
@@ -148,6 +151,11 @@ class Gitbook{
         this.statusItem.text = 'Markdown Example Code';
         this.statusItem.command = "extension.markdownExample";
         this.statusItem.tooltip = "Show Markdown Code Examples";
+
+        const configuration = vscode.workspace.getConfiguration(extensionName);
+        this.opts = {
+            showAutoPreview: configuration.get('showPreview')
+        }
     }
 
     openTreeItem(node){
@@ -204,6 +212,7 @@ class Gitbook{
         let result = [];
         let openFlag = false;
         let lastFile = null;
+
         let openPreview = ()=>{
             let editor = vscode.window.activeTextEditor;
             if (editor) {
@@ -224,17 +233,16 @@ class Gitbook{
         result.push(vscode.commands.registerCommand('extension.iedit', this.openTreeItem));
 
         
-        if(vscode.window.activeTextEditor){
+        if(vscode.window.activeTextEditor && this.opts.showAutoPreview){
             openPreview();
         }
 
         vscode.window.onDidChangeActiveTextEditor((active)=>{
-            if(active && Gitbook.isMarkdown(active.document)){
+            if(active && this.opts.showAutoPreview && Gitbook.isMarkdown(active.document)){
                 openPreview();                    
             }
         });
        
-
         result.push(vscode.commands.registerCommand('extension.markdownExample', this.markdownExample));
 
         if(vscode.window.activeTextEditor){
@@ -242,6 +250,7 @@ class Gitbook{
                 this.statusItem.show();
             }
         }
+
         result.push(vscode.window.onDidChangeActiveTextEditor((function($this){
             return ()=>{
                 let active = vscode.window.activeTextEditor;

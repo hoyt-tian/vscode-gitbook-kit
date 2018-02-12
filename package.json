@@ -37,6 +37,27 @@
                     "when": "view == bookstruct"
                 }
             ]
+        },
+        "configuration" : {
+            "title": "gitbook-kit configurations",
+            "type": "object",
+            "properties": {
+                "gitbook-kit": {
+                    "description": "gitbook-kit config object",
+					"type": "object",
+                    "scope": "resource",
+                    "default": {
+                        "showPreview": true
+                    },
+                    "properties": {
+                        "showPreview": {
+                            "description": "default show preview on the right",
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                }
+            }
         }
     },
     "scripts": {
