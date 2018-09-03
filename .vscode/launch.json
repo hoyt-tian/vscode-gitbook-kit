@@ -6,9 +6,10 @@
             "name": "Launch Extension",
             "type": "extensionHost",
             "request": "launch",
+            "sourceMaps": true,
             "runtimeExecutable": "${execPath}",
             "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
-            "stopOnEntry": false
+            "stopOnEntry": false,
         },
         {
             "name": "Launch Tests",

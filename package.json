@@ -2,44 +2,43 @@
     "name": "gitbook-kit",
     "displayName": "Gitbook kit",
     "description": "Extension to makes VSCode Markdown Editor for Gitbook",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "publisher": "hoyt-tian",
     "engines": {
         "vscode": "^1.17.0"
     },
     "categories": [
-        "Languages",
+        "Programming Languages",
         "Other"
     ],
     "activationEvents": [
-        "workspaceContains:SUMMARY.md"
+        "onLanguage:markdown",
+        "workspaceContains:./SUMMARY.md"
     ],
-    "main": "./extension",
+    "main": "./src/index",
     "contributes": {
-        "commands": [
-            {
-                "command": "extension.iedit",
-                "title": "Edit & Preview"
-            }
-        ],
+        "viewsContainers": {
+			"activitybar": [
+				{
+					"id": "gitbook-explorer",
+					"title": "Gitbook Explorer",
+					"icon": "book.svg"
+				}
+			]
+		},
         "views": {
-            "explorer": [
+            "gitbook-explorer": [
                 {
                     "id": "bookstruct",
-                    "name": "Gitbook Structure"
-                }
-            ]
-        },
-        "menus": {
-            "view/item/context": [
-                {
-                    "command": "extension.iedit",
-                    "when": "view == bookstruct"
+                    "name": "Book Structure",
+                    "when": "showOutline"
                 }
             ]
         }
     },
     "scripts": {
+        "debug": "webpack --config webpack.debug.js",
+        "build": "webpack",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "node ./node_modules/vscode/bin/test"
     },
