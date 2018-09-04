@@ -5,8 +5,9 @@ class TreeDataProvider {
     outline.emitter = new vscode.EventEmitter();
     outline.onDidChangeTreeData = outline.emitter.event;
 
-    outline.update = function() { 
-      this.emitter.fire(); 
+    outline.update = function(nobj) { 
+      this.children = nobj.children;
+      this.emitter.fire();
     };
 
     outline.getParent = function(element) {
@@ -15,6 +16,7 @@ class TreeDataProvider {
 
     outline.getTreeItem = function(element){
       const item = new vscode.TreeItem(element.text, element.children && element.children.length ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.Expanded);
+      item.tooltip = element.link;
       return item;
     };
 

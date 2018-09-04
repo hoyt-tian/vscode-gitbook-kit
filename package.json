@@ -22,7 +22,8 @@
 				{
 					"id": "gitbook-explorer",
 					"title": "Gitbook Explorer",
-					"icon": "book.svg"
+                    "icon": "book.svg",
+                    "when": "showGitbook"
 				}
 			]
 		},
