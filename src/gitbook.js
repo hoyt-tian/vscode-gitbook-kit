@@ -22,7 +22,7 @@ class Gitbook {
      * register commands
      */
     this.commands = {
-      treeContext: vscode.commands.registerCommand('gitbook.addRootEntry', treeElement => {
+      addEntry: vscode.commands.registerCommand('gitbook.addEntry', treeElement => {
         createNewNode(treeElement).then(({ text, link }) => {
           const parent = treeElement ? treeElement : this.outline;
           parent.children = parent.children || [];
@@ -34,17 +34,32 @@ class Gitbook {
             parent,
           };
           parent.children.push(item);
-          fs.writeFileSync(this.fileName, this.outline.toText(), 'utf8');
-          vscode.workspace.openTextDocument(this.fileName);
-          this.outline.update();
+          this.updateOutline();
         }, err => {
           console.error(err);
         });
       }),
+      renameEntry: vscode.commands.registerCommand('gitbook.renameEntry', treeElement => {
+        vscode.window.showInputBox({
+          prompt: 'Please type new Node name',
+          value: treeElement.text,
+        }).then(val => {
+          if (val) {
+            treeElement.text = val;
+            this.updateOutline();
+          }
+        });
+      }),
     };
-    
+  }
 
-    console.log(this.commands.treeContext);
+  /**
+   * 更新SUMMARY.md内容，更新UI
+   */
+  updateOutline() {
+    fs.writeFileSync(this.fileName, this.outline.toText(), 'utf8');
+    vscode.workspace.openTextDocument(this.fileName);
+    this.outline.update();
   }
 
   bootstrap(context) {

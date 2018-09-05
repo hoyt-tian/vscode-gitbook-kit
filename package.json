@@ -37,14 +37,22 @@
         },
         "commands":[
             {
-                "command": "gitbook.addRootEntry",
+                "command": "gitbook.addEntry",
                 "title": "add"
+            },
+            {
+                "command": "gitbook.renameEntry",
+                "title": "rename"
             }
         ],
         "menus": {
             "view/item/context":[
                 {
-                    "command": "gitbook.addRootEntry",
+                    "command": "gitbook.addEntry",
+                    "when": "view == bookstruct"
+                },
+                {
+                    "command": "gitbook.renameEntry",
                     "when": "view == bookstruct"
                 }
             ]
