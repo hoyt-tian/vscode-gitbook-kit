@@ -2,9 +2,11 @@
 const Resource = {
   'en-US': {
     'catalog404': 'SUMMARY.md not found',
+    'newChapter': 'New Chapter',
   },
   'zh-CN': {
     'catalog404': '找不到SUMMARY.md文件',
+    'newChapter': 'New Chapter',
   }
 };
 

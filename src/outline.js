@@ -2,6 +2,7 @@ class Outline {
   constructor() {
     this.children = [];
     this.level = 0;
+    this.type = '#';
   }
 
   static from(text = '') {
@@ -52,7 +53,17 @@ class Outline {
   }
 
   toText() {
-
+    const lines = [];
+    const flattern = (children, result) => {
+      children.forEach(item => {
+        result.push(`${new Array(item.level).fill(item.type).join('')} [${item.text}](${item.link}) `);
+        if (item.children && item.children.length) {
+          flattern(item.children, result);
+        }
+      });
+    }
+    flattern(this.children, lines);
+    return lines.join('\r\n');
   }
 }
 

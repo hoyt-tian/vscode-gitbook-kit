@@ -6,7 +6,9 @@ class TreeDataProvider {
     outline.onDidChangeTreeData = outline.emitter.event;
 
     outline.update = function(nobj) { 
-      this.children = nobj.children;
+      if (nobj && nobj.children) {
+        this.children = nobj.children;
+      }
       this.emitter.fire();
     };
 
@@ -15,7 +17,7 @@ class TreeDataProvider {
     }
 
     outline.getTreeItem = function(element){
-      const item = new vscode.TreeItem(element.text, element.children && element.children.length ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.Expanded);
+      const item = new vscode.TreeItem(element.text, element.children && element.children.length ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.None);
       item.tooltip = element.link;
       return item;
     };

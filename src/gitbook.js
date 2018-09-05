@@ -4,6 +4,7 @@ const vscode = require('vscode');
 const Outline = require('./outline');
 const treeDataProvider = require('./treedata');
 const I18n = require('./i18n');
+const { createNewNode } = require('./util');
 
 class Gitbook {
 
@@ -16,6 +17,34 @@ class Gitbook {
         this.outline.update(Outline.from(document.getText()));
       }
     });
+
+    /**
+     * register commands
+     */
+    this.commands = {
+      treeContext: vscode.commands.registerCommand('gitbook.addRootEntry', treeElement => {
+        createNewNode(treeElement).then(({ text, link }) => {
+          const parent = treeElement ? treeElement : this.outline;
+          parent.children = parent.children || [];
+          const item = {
+            type: parent.type,
+            level: parent.level+1,
+            text,
+            link,
+            parent,
+          };
+          parent.children.push(item);
+          fs.writeFileSync(this.fileName, this.outline.toText(), 'utf8');
+          vscode.workspace.openTextDocument(this.fileName);
+          this.outline.update();
+        }, err => {
+          console.error(err);
+        });
+      }),
+    };
+    
+
+    console.log(this.commands.treeContext);
   }
 
   bootstrap(context) {
@@ -27,7 +56,6 @@ class Gitbook {
       vscode.window.showWarningMessage(this.i18n.get('catalog404'));
       this.setOutline({ children: [] });
     }
-    vscode.commands.executeCommand('setContext', 'showGitbook', true);
   }
 
   setOutline(outline) {

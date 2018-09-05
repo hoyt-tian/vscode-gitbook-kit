@@ -22,8 +22,7 @@
 				{
 					"id": "gitbook-explorer",
 					"title": "Gitbook Explorer",
-                    "icon": "book.svg",
-                    "when": "showGitbook"
+                    "icon": "book.svg"
 				}
 			]
 		},
@@ -33,6 +32,20 @@
                     "id": "bookstruct",
                     "name": "Book Structure",
                     "when": "showOutline"
+                }
+            ]
+        },
+        "commands":[
+            {
+                "command": "gitbook.addRootEntry",
+                "title": "add"
+            }
+        ],
+        "menus": {
+            "view/item/context":[
+                {
+                    "command": "gitbook.addRootEntry",
+                    "when": "view == bookstruct"
                 }
             ]
         }
