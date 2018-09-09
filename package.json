@@ -12,20 +12,19 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:markdown",
         "workspaceContains:./SUMMARY.md"
     ],
     "main": "./src/index",
     "contributes": {
         "viewsContainers": {
-			"activitybar": [
-				{
-					"id": "gitbook-explorer",
-					"title": "Gitbook Explorer",
+            "activitybar": [
+                {
+                    "id": "gitbook-explorer",
+                    "title": "Gitbook Explorer",
                     "icon": "book.svg"
-				}
-			]
-		},
+                }
+            ]
+        },
         "views": {
             "gitbook-explorer": [
                 {
@@ -35,24 +34,40 @@
                 }
             ]
         },
-        "commands":[
+        "commands": [
             {
                 "command": "gitbook.addEntry",
-                "title": "add"
+                "title": "Add"
             },
             {
                 "command": "gitbook.renameEntry",
-                "title": "rename"
+                "title": "Rename"
+            },
+            {
+                "command": "gitbook.openDoc",
+                "title": "Edit"
+            },
+            {
+                "command": "gitbook.editSummary",
+                "title": "Edit Summary.md"
             }
         ],
         "menus": {
-            "view/item/context":[
+            "view/item/context": [
                 {
                     "command": "gitbook.addEntry",
                     "when": "view == bookstruct"
                 },
                 {
                     "command": "gitbook.renameEntry",
+                    "when": "view == bookstruct"
+                },
+                {
+                    "command": "gitbook.openDoc",
+                    "when": "view == bookstruct"
+                },
+                {
+                    "command": "gitbook.editSummary",
                     "when": "view == bookstruct"
                 }
             ]

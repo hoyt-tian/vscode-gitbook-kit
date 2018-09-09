@@ -5,7 +5,7 @@ class TreeDataProvider {
     outline.emitter = new vscode.EventEmitter();
     outline.onDidChangeTreeData = outline.emitter.event;
 
-    outline.update = function(nobj) { 
+    outline.update = function(nobj) {
       if (nobj && nobj.children) {
         this.children = nobj.children;
       }

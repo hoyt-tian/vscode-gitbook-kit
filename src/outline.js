@@ -8,8 +8,8 @@ class Outline {
   static from(text = '') {
     const outline = new Outline();
     const lines = text.split(/\r?\n/);
-    const hReg = /^[#\*]+\s+\[.+\]\(.+\)/;
-    const hRgroup = /^([#\*]+)\s+\[(.+)\]\((.+)\)/;
+    const hReg = /^[#\*]+\s+\[.+\]\(.*\)/;
+    const hRgroup = /^([#\*]+)\s+\[(.+)\]\((.*)\)/;
 
     let parent = outline;
 

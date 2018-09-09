@@ -4,7 +4,7 @@ const vscode = require('vscode');
 const Outline = require('./outline');
 const treeDataProvider = require('./treedata');
 const I18n = require('./i18n');
-const { createNewNode } = require('./util');
+const { createNewNode, findAllMD, showDoc } = require('./util');
 
 class Gitbook {
 
@@ -40,8 +40,11 @@ class Gitbook {
         });
       }),
       renameEntry: vscode.commands.registerCommand('gitbook.renameEntry', treeElement => {
+        if (!treeElement) {
+          return vscode.window.showWarningMessage(this.i18n.get('selectNode'));
+        }
         vscode.window.showInputBox({
-          prompt: 'Please type new Node name',
+          prompt: this.i18n.get('typeNodeName'),
           value: treeElement.text,
         }).then(val => {
           if (val) {
@@ -49,6 +52,44 @@ class Gitbook {
             this.updateOutline();
           }
         });
+      }),
+      openDoc: vscode.commands.registerCommand('gitbook.openDoc', treeElement => {
+        if (!treeElement) {
+          return vscode.window.showWarningMessage(this.i18n.get('selectNode'));
+        }
+        if (treeElement.link) {
+          // link exists or not
+          const fileName = path.join(vscode.workspace.rootPath, treeElement.link);
+          if (fs.existsSync(fileName)) {
+            showDoc(fileName);
+          } else {
+            try {
+              const file = fs.createWriteStream(fileName);
+              file.end();
+              showDoc(fileName);
+            } catch(e) {
+              vscode.window.showErrorMessage(JSON.stringify(e));
+            }
+          }
+        } else {
+            vscode.window.showInformationMessage(this.i18n.get('link404'));
+            findAllMD().then(files => {
+              vscode.window.showQuickPick(
+                files.map(i => vscode.workspace.asRelativePath(i.fsPath))
+              ).then(uri => {
+                try {
+                  treeElement.link = uri;
+                  this.updateOutline();
+                  showDoc(path.join(vscode.workspace.rootPath, uri));
+                } catch (e) {
+                  console.error(e);
+                }
+              });
+            });
+        }
+      }),
+      editSummary: vscode.commands.registerCommand('gitbook.editSummary', treeElement => {
+          showDoc(path.join(vscode.workspace.rootPath, 'SUMMARY.md'));
       }),
     };
   }
@@ -59,7 +100,7 @@ class Gitbook {
   updateOutline() {
     fs.writeFileSync(this.fileName, this.outline.toText(), 'utf8');
     vscode.workspace.openTextDocument(this.fileName);
-    this.outline.update();
+    return this.outline.update();
   }
 
   bootstrap(context) {

@@ -1,5 +1,20 @@
 const vscode = require('vscode');
 
+
+const  findAllMD = () => {
+  return vscode.workspace.findFiles('**/*.md', '**/node_modules/**');
+};
+
+const showDoc = (fileName) => {
+  vscode.window.showTextDocument(vscode.Uri.file(fileName), {
+    viewColumn: vscode.ViewColumn.One
+  }).then(f => {
+
+  }, e => {
+    console.log('fail to open');
+  });
+}
+
 const createNewNode = (element) => {
   return new Promise((resolve, reject) => {
     const nameInput = vscode.window.createInputBox();
@@ -19,14 +34,18 @@ const createNewNode = (element) => {
       if (val && /^\s+$/.test(val)!==true) {
         nameInput.hide();
         name = val;
-        picker.items = vscode.workspace.textDocuments.filter(i => /.md$/i.test(i.fileName)).map(i => {
-          return {
-            picker: false,
-            label: vscode.workspace.asRelativePath(i.fileName)
-          };
+
+        findAllMD().then(files => {
+          picker.items = files.map(i => {
+            return {
+              picker: false,
+              label: vscode.workspace.asRelativePath(i.fsPath)
+            };
+          });
+          picker.buttons = [vscode.QuickInputButtons.Back];
+          picker.show();
         });
-        picker.buttons = [vscode.QuickInputButtons.Back];
-        picker.show();
+        
       } else {
         vscode.window.showErrorMessage('Can not be empty');
       }
@@ -58,4 +77,6 @@ const createNewNode = (element) => {
 
 module.exports = {
   createNewNode,
+  findAllMD,
+  showDoc,
 }
