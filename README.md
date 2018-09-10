@@ -4,17 +4,19 @@
 
 Since there're some bugs in Gitbook Editor(Mac version), I made this extension so that I could use VSCode as the gitbook editor.
 
-![preview](https://www.hoyt-tian.com/content/images/2017/11/s5.png)
+![preview](https://www.hoyt-tian.com/content/images/2018/09/preview.png)
 
 ## 功能 Features
 
-* 可以很方便的在右侧进行效果预览，同步查看当前的代码效果；
-* 提供了Gitbook Structure窗口，方便查看当前文档目录，并支持右键编辑对应文件
-* 在Markdown文件中，右下角有Markdown Example Code，方便快捷查询范例
+* 若存在SUMMARY.md文件，自动激活插件
+* 文档结构树支持编辑功能，可以增加、删除、重命名节点
+* 文档借口树的变动会自动同步到SUMMARY.md文件中
+* SUMMARY.md文件发上变动时，左侧文档树会同步更新
 
-* It's very convience to preivew the markdown content in the right side
-* The Gitbook Structure window shows current catalog, you can navigate to any chapter by right click
-* In the markdown editor, there is a button named `Markdown Example Code`, click it you'll see some examples for common markup
+* Extension will be actived when SUMMARY.md exits.
+* You can edit book structure in the Gitbook Struct Explorer View. (Create node, rename node or delete node)
+* All changes made in the structure view will be synchronized to SUMMARY.md
+* Gitbook struct will be updated once SUMMARY.md changed.
 
 ### 更多信息 More
 
