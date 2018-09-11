@@ -2,7 +2,7 @@
     "name": "gitbook-kit",
     "displayName": "Gitbook kit",
     "description": "Extension to makes VSCode Markdown Editor for Gitbook",
-    "version": "0.6.1",
+    "version": "0.6.2",
     "publisher": "hoyt-tian",
     "engines": {
         "vscode": "^1.17.0"
