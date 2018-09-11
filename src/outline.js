@@ -66,7 +66,7 @@ class Outline {
             item.link = null;
             item.text = data[1];
           }
-        } else if (hReg.test(lilne)){
+        } else if (hReg.test(line)){
           data = line.match(hRgroup);
           item.type = data[1][0];
           item.level = data[1].length;
