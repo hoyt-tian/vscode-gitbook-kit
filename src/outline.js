@@ -12,9 +12,9 @@ class Outline {
     const hReg = /[#\*\t]+\s+\[.+\]\(.*\)/;
     const hRgroup = /([#\*\t]+)\s+\[(.+)\]\((.*)\)/;
 
-    const hlReg = /#\s+.+/
-    const slReg = /\*\s+.*/
-    const tlReg = /\s+\*\s+.*/
+    const hlReg = /^#\s+.+/
+    const slReg = /^\*\s+.*/
+    const tlReg = /^\s+\*\s+.*/
     const linkReg = /\[.+\]\(.*\)/
     const linkGroup = /\[(.+)\]\((.*)\)/
 
@@ -49,7 +49,7 @@ class Outline {
           if (linkReg.test(line)) {
             data  = line.match(linkGroup);
             item.text = data[1];
-            item.text = data[2];
+            item.link = data[2];
           } else {
             data = line.match(/\*\s+(.*)/);
             item.link = null;
@@ -60,19 +60,21 @@ class Outline {
           if (linkReg.test(line)) {
             data  = line.match(linkGroup);
             item.text = data[1];
-            item.text = data[2];
+            item.link = data[2];
           } else {
             data = line.match(/\s+\*\s+(.*)/);
             item.link = null;
             item.text = data[1];
           }
-        } else {
+        } else if (hReg.test(lilne)){
           data = line.match(hRgroup);
           item.type = data[1][0];
           item.level = data[1].length;
           item.text = data[2];
           item.link = data[3];
           item.parent = parent;
+        } else {
+          return;
         }
         
         if (item.level === parent.level) { // 新节点与当前parent节点平级
