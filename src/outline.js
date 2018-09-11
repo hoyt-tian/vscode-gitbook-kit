@@ -5,25 +5,77 @@ class Outline {
     this.type = '#';
   }
 
+
   static from(text = '') {
     const outline = new Outline();
     const lines = text.split(/\r?\n/);
-    const hReg = /[#\*]+\s+\[.+\]\(.*\)/;
-    const hRgroup = /([#\*]+)\s+\[(.+)\]\((.*)\)/;
+    const hReg = /[#\*\t]+\s+\[.+\]\(.*\)/;
+    const hRgroup = /([#\*\t]+)\s+\[(.+)\]\((.*)\)/;
+
+    const hlReg = /^#\s+.+/
+    const slReg = /^\*\s+.*/
+    const tlReg = /^\s+\*\s+.*/
+    const linkReg = /\[.+\]\(.*\)/
+    const linkGroup = /\[(.+)\]\((.*)\)/
+
 
     let parent = outline;
 
     lines.forEach(line => {
       if(line == null || line.length < 1) return;
-      else if(hReg.test(line)) {
-        const data = line.match(hRgroup);
+      else {
+        let data = null;
         const item = {
-          type: data[1][0],
-          level: data[1].length,
-          text: data[2],
-          link: data[3] || null,
-          parent: parent
+          type: null,
+          level: -1,
+          text: null,
+          link: null,
+          parent: null,
         };
+        if (hlReg.test(line)) {
+          item.type = '#';
+          item.level = 1;
+          if (linkReg.test(line)) {
+            data  = line.match(linkGroup);
+            item.text = data[1];
+            item.link = data[2];
+          } else {
+            data = line.match(/#\s+(.*)/);
+            item.link = null;
+            item.text = data[1];
+          }
+        } else if (slReg.test(line)) {
+          item.level = 2;
+          if (linkReg.test(line)) {
+            data  = line.match(linkGroup);
+            item.text = data[1];
+            item.link = data[2];
+          } else {
+            data = line.match(/\*\s+(.*)/);
+            item.link = null;
+            item.text = data[1];
+          }
+        } else if (tlReg.test(line)) {
+          item.level = 3;
+          if (linkReg.test(line)) {
+            data  = line.match(linkGroup);
+            item.text = data[1];
+            item.link = data[2];
+          } else {
+            data = line.match(/\s+\*\s+(.*)/);
+            item.link = null;
+            item.text = data[1];
+          }
+        } else if (hReg.test(lilne)){
+          data = line.match(hRgroup);
+          item.type = data[1][0];
+          item.level = data[1].length;
+          item.text = data[2];
+          item.link = data[3];
+          item.parent = parent;
+        } else {
+          return;
+        }
         
         if (item.level === parent.level) { // 新节点与当前parent节点平级
           parent = parent.parent;
@@ -52,11 +104,24 @@ class Outline {
     return outline;
   }
 
+  static toLevel(item) {
+    switch(item.level) {
+      case 1:
+        return '#';
+      case 2:
+        return '*';
+      case 3:
+        return '\t*';
+      default:
+        return new Array(item.level).fill(item.type).join('');
+    }
+  }
+
   toText() {
     const lines = [];
     const flattern = (children, result) => {
       children.forEach(item => {
-        result.push(`${new Array(item.level).fill(item.type).join('')} [${item.text}](${item.link}) `);
+        result.push(`${Outline.toLevel(item)} [${item.text}](${item.link}) `);
         if (item.children && item.children.length) {
           flattern(item.children, result);
         }
